@@ -7,64 +7,87 @@ var selectedPizza = null;
 var selectedTopping = null;
 var selectedSize = null;
 var sizeinUse = false;
+var toppingIsSelected = false;
+
 
 var currency = "$";
 
 var pizzas = [
   {
     Name:'Margharita',
-    Price: 8.50
+    Price: 8.50,
+    selected: false,
   },
   {
    Name:"Kebab",
-   Price: 8.50
+   Price: 8.50,
+   selected: false,
+
  },
  {
    Name:"Funghi",
-   Price: 11.50
+   Price: 11.50,
+   selected: false,
+
  },
  {
    Name:"Pollo",
-   Price: 10
+   Price: 10,
+   selected: false,
  }
-
 ];
 
 var toppings = [
   {
     Name:'Extra cheese',
-    Price: 1.5
+    Price: 1.5,
+    selected: false,
+
   },
   {
    Name:"Extra chicken",
-   Price: 2
+   Price: 2,
+   selected: false,
+
  },
  {
    Name:"BBQ sauce",
-   Price: 0.75
+   Price: 0.75,
+   selected: false,
+
  },
  {
    Name:"Olives",
-   Price: 0.5
+   Price: 0.5,
+   selected: false,
+
  }
 ];
 
  var size = [
    {
      Name:'Normal',
-     Factor: 1
+     Factor: 1,
+     selected: false,
+
    },
    {
     Name:"Medium",
-    Factor: 1.5
+    Factor: 1.5,
+    selected: false,
+
   },
   {
     Name:"Large",
-    Factor: 2
+    Factor: 2,
+    selected: false,
+
   },
   {
     Name:"King",
-    Factor: 5
+    Factor: 5,
+    selected: false,
+
   }
 
 ];
@@ -103,11 +126,13 @@ for (var i = 0; i < toppings.length; i++) {
         // Set its contents:
         item.appendChild(document.createTextNode(toppings[i].Name));
 
+        //add id to the topping
+        item.setAttribute("id" , "t" + i);
+        item.onclick = function(){ pickTopping( "t" + i); }
+
         // Add it to the list:
         toppinglist.appendChild(item);
 
-        //add id to the topping
-        item.setAttribute("id" , "t" + i)
     }
 
 
@@ -197,11 +222,16 @@ function funghiClick(){
 
   //START OF TOPPING FUNCTIONS.
 
+function pickTopping(toppingNumber) {
+  console.log("Clicked topping: " . toppingNumber);
+}
+
 //Cheeseclick
   function cheeseClick(){
     selectedTopping = toppings[0];
     totalPrice = totalPrice + selectedTopping.Price;
     pizzaPrice.innerHTML = currency + totalPrice
+    toppingIsSelected = true;
   }
 
       tche.onclick = function (){
@@ -255,13 +285,13 @@ function normalsizeClick(){
       normalsizeClick();
     }
 
-var toppingIsSelected = false;
+
 function mediumsizeClick(){
   selectedSize = size[1];
-  if (toppingIsSelected = true) {
-    totalPrice = selectedPizza.Price * selectedSize.Factor + selectedTopping.Price;
-  } else {
+  if (toppingIsSelected == false) {
     totalPrice = selectedPizza.Price * selectedSize.Factor;
+  } else {
+    totalPrice = selectedPizza.Price * selectedSize.Factor + selectedTopping.Price;
   }
   pizzaPrice.innerHTML = currency + totalPrice;
 }

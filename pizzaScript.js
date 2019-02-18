@@ -4,14 +4,14 @@ var pizzaImage = document.getElementById('pizzaImage');
 var pizzaPrice = document.getElementById('pizzaPrice');
 var totalPrice = 0;
 var totalPriceWithSlicing = 0;
-var selectedPizza = null;
-var selectedTopping = null;
-var selectedSlicing = null;
+var SelectedPizza = null;
+var SelectedTopping = null;
+var SelectedSlicing = null;
 var slicingAlreadySelected = false;
-var selectedSize = null;
+var SelectedSize = null;
 var sizeinUse = false;
 var toppingIsSelected = false;
-
+var alert = document.getElementById('alert');
 
 var currency = "$";
 
@@ -19,24 +19,28 @@ var pizzas = [
   {
     Name:'Margharita',
     Price: 8.50,
-    selected: false,
+    Image: "img/marg.png",
+    Selected: false,
   },
   {
    Name:"Kebab",
    Price: 8.50,
-   selected: false,
+   Image: "img/kebab.png",
+   Selected: false,
 
  },
  {
    Name:"Funghi",
    Price: 11.50,
-   selected: false,
+   Image: "img/funghi.png",
+   Selected: false,
 
  },
  {
    Name:"Pollo",
    Price: 10,
-   selected: false,
+   Image: "img/pollo.png",
+   Selected: false,
  }
 ];
 
@@ -44,82 +48,85 @@ var toppings = [
   {
     Name:'Extra cheese',
     Price: 1.5,
-    selected: false,
+    Selected: false,
 
   },
   {
    Name:"Extra chicken",
    Price: 2,
-   selected: false,
+   Selected: false,
 
  },
  {
    Name:"BBQ sauce",
    Price: 0.75,
-   selected: false,
+   Selected: false,
 
  },
  {
    Name:"Olives",
    Price: 0.5,
-   selected: false,
+   Selected: false,
 
  }
 ];
 
  var size = [
-   {
-     Name:'Normal',
-     Factor: 1,
-     selected: false,
-
-   },
-   {
-    Name:"Medium",
-    Factor: 1.5,
-    selected: false,
-
-  },
-  {
-    Name:"Large",
-    Factor: 2,
-    selected: false,
-
-  },
-  {
-    Name:"King",
-    Factor: 3,
-    selected: false,
-
-  }
+   { Name:'Normal', Factor: 1, Selected: false },
+   { Name:"Medium", Factor: 1.5, Selected: false},
+   { Name:"Large", Factor: 2, Selected: false },
+   { Name:"King", Factor: 3, Selected: false }
 ];
 
 var slicing = [
   {
     Name:'Unsliced',
     Price: 0,
-    selected: false,
+    Selected: false,
 
   },
   {
    Name:"Two Slice",
    Price: 0.5,
-   selected: false,
+   Selected: false,
 
  },
  {
    Name:"Four Slice",
    Price: 0.75,
-   selected: false,
+   Selected: false,
 
  },
  {
    Name:"Six Slice",
    Price: 1,
-   selected: false,
+   Selected: false,
 
  }
 ];
+
+var additional = [
+  {
+    Name:'Delivery',
+    Price: 1.50,
+    Selected: false,
+  },
+  {
+   Name:"Debit card",
+   Price: 0.5,
+   Selected: false,
+
+ },
+]
+
+
+//display alert function
+function displayAlert() {
+  alert.style.display = "block";
+setTimeout(function(){
+alert.style.display = "none";
+}, 1500)
+}
 
 //Pizzalist ophalen
 var pizzalist = document.getElementById('pizzaNameList');
@@ -149,307 +156,236 @@ for (var i = 0; i < pizzas.length; i++) {
 var toppinglist = document.getElementById('toppingNameList');
 
 for (var i = 0; i < toppings.length; i++) {
-        // Create the list item:
-        var item = document.createElement('li');
+  // Create the list item:
+  var item = document.createElement('li');
 
-        // Set its contents:
-        item.appendChild(document.createTextNode(toppings[i].Name));
+  // Set its contents:
+  item.appendChild(document.createTextNode(toppings[i].Name));
 
-        //add id to the topping
-        item.setAttribute("id" , "t" + i);
-        item.onclick = function(){ pickTopping( "t" + i); }
+  //add id to the topping
+  item.setAttribute("id" , "t" + i);
+  // Add it to the list:
+  toppinglist.appendChild(item);
 
-        // Add it to the list:
-        toppinglist.appendChild(item);
+}
 
+
+//get all toppings by id
+var tche = document.getElementById('t0');
+var tchi = document.getElementById('t1');
+var tbbq = document.getElementById('t2');
+var toli = document.getElementById('t3');
+
+
+//size ophalen
+var sizelist = document.getElementById('sizeNameList');
+
+    for (var i = 0; i < size.length; i++) {
+    // Create the list item:
+    var item = document.createElement('li');
+
+    // Set its contents:
+    item.appendChild(document.createTextNode(size[i].Name));
+
+    // Add it to the list:
+    sizelist.appendChild(item);
+
+    //add id to the topping
+    item.setAttribute("id" , "s" + i)
     }
 
+    //get all toppings by id
+    var snor = document.getElementById('s0');
+    var smed = document.getElementById('s1');
+    var slar = document.getElementById('s2');
+    var skin = document.getElementById('s3');
 
-          //get all toppings by id
-          var tche = document.getElementById('t0');
-          var tchi = document.getElementById('t1');
-          var tbbq = document.getElementById('t2');
-          var toli = document.getElementById('t3');
+//slicing ophalen
+  var slicinglist = document.getElementById('slicingNameList');
+
+    for (var i = 0; i < slicing.length; i++) {
+              // Create the list item:
+    var item = document.createElement('li');
+
+        // Set its contents:
+              item.appendChild(document.createTextNode(slicing[i].Name));
+
+    // Add it to the list:
+      slicinglist.appendChild(item);
+
+    //add id to the topping
+    item.setAttribute("id" , "sl" + i)
+          }
+    //get all toppings by id
+    var slun = document.getElementById('sl0');
+    var sltwo = document.getElementById('sl1');
+    var slfou = document.getElementById('sl2');
+    var slsix = document.getElementById('sl3');
 
 
-  //size ophalen
-  var sizelist = document.getElementById('sizeNameList');
+//additionallist
+    var additionals = document.getElementById('additionalList');
 
-  for (var i = 0; i < size.length; i++) {
+    for (var i = 0; i < additional.length; i++) {
             // Create the list item:
             var item = document.createElement('li');
 
             // Set its contents:
-            item.appendChild(document.createTextNode(size[i].Name));
+            item.appendChild(document.createTextNode(additional[i].Name));
 
             // Add it to the list:
-            sizelist.appendChild(item);
+            additionals.appendChild(item);
 
-            //add id to the topping
-            item.setAttribute("id" , "s" + i)
-        }
-            //get all toppings by id
-            var snor = document.getElementById('s0');
-            var smed = document.getElementById('s1');
-            var slar = document.getElementById('s2');
-            var skin = document.getElementById('s3');
-
-    //slicing ophalen
-      var slicinglist = document.getElementById('slicingNameList');
-
-          for (var i = 0; i < slicing.length; i++) {
-                      // Create the list item:
-          var item = document.createElement('li');
-
-                // Set its contents:
-                      item.appendChild(document.createTextNode(slicing[i].Name));
-
-          // Add it to the list:
-              slicinglist.appendChild(item);
-
-            //add id to the topping
-            item.setAttribute("id" , "sl" + i)
-                  }
-            //get all toppings by id
-          var slun = document.getElementById('sl0');
-          var sltwo = document.getElementById('sl1');
-          var slfou = document.getElementById('sl2');
-          var slsix = document.getElementById('sl3');
-
-
-//PIZZA ONCLICK START!!!!!!!!!!!!!!!!!!!!!!!!!!!//
-
-// Margherita onclick
-function margharitaClick() {
-  pizzaName.innerHTML = "Pizza Margharita";
-  pizzaImage.src = "img/marg.png";
-  selectedPizza = pizzas[0];
-  totalPrice = selectedPizza.Price;
-  pizzaPrice.innerHTML = currency + totalPrice;
-}
-
-    pmar.onclick = function(){
-      margharitaClick();
-    }
-
-//Kebab onclick
-function kebabClick(){
-  pizzaName.innerHTML = "Pizza Kebab";
-  pizzaImage.src = "img/kebab.png";
-  selectedPizza = pizzas[1];
-  totalPrice = selectedPizza.Price;
-  pizzaPrice.innerHTML = currency + totalPrice;
-}
-
-    pkeb.onclick = function(){
-      kebabClick();
-    }
-
-//funghi onclick
-function funghiClick(){
-    pizzaName.innerHTML = "Pizza Funghi";
-    pizzaImage.src = "img/funghi.png";
-    selectedPizza = pizzas[2];
-    totalPrice = selectedPizza.Price;
-    pizzaPrice.innerHTML = currency + totalPrice;
-  }
-
-        pfun.onclick=function(){
-          funghiClick();
+            //add id to the pizza'switch
+            item.setAttribute("id" , "a" + i)
         }
 
-  //pollo onclick
-  function polloClick(){
-    pizzaName.innerHTML = "Pizza Pollo";
-    selectedPizza = pizzas[3];
-    totalPrice = selectedPizza.Price;
-    pizzaPrice.innerHTML = currency + totalPrice;
+        //get all pizza's by // ID
+        var adel = document.getElementById('a0');
+        var aban = document.getElementById('a1');
+
+
+function selectPizza(Selected) {
+  // loop over alles in de Topping array
+  // kijk of de naam overeenkomst met 'Selected'
+  // zo ja, zet dan daar "Selected" op true in de array
+  var i;
+  for (i = 0; i < pizzas.length; i++) {
+    if(pizzas[i].Name == Selected) {
+      pizzas[i].Selected = true;
+    } else {
+      pizzas[i].Selected = false;
+    } ;
   }
-
-      ppol.onclick = function(){
-        polloClick();
-      }
-
-
-  //START OF TOPPING FUNCTIONS.
-
-function pickTopping(toppingNumber) {
-  console.log("Clicked topping: " . toppingNumber);
+  displayAlert();
+  calculateTotalPrice();
 }
 
-//Cheeseclick
-  function cheeseClick(){
-    selectedTopping = toppings[0];
-    totalPrice = totalPrice + selectedTopping.Price;
-    pizzaPrice.innerHTML = currency + totalPrice
-    toppingIsSelected = true;
-  }
+        pmar.onclick = function () {selectPizza('Margharita');}
+        pkeb.onclick = function () {selectPizza('Kebab');}
+        pfun.onclick = function () {selectPizza('Funghi');}
+        ppol.onclick = function () {selectPizza('Pollo');}
 
-      tche.onclick = function (){
-        cheeseClick();
-      }
+function selectTopping(Selected) {
+// loop over alles in de Topping array
+// kijk of de naam overeenkomst met 'Selected'
+// zo ja, zet dan daar "Selected" op true in de array
+var i;
+for (i = 0; i < toppings.length; i++) {
+  if(toppings[i].Name == Selected) {
+    toppings[i].Selected = true;
+  } ;
+}
+displayAlert();
+calculateTotalPrice();
+}
 
-//Chicken click
-  function chickenClick(){
-    selectedTopping = toppings[1];
-    totalPrice = totalPrice + selectedTopping.Price;
-    pizzaPrice.innerHTML = currency + totalPrice
-  }
+      tche.onclick = function () {selectTopping('Extra cheese');}
+      tchi.onclick = function () {selectTopping('Extra chicken');}
+      tbbq.onclick = function () {selectTopping('BBQ sauce');}
+      toli.onclick = function () {selectTopping('Olives');}
 
-      tchi.onclick = function (){
-        chickenClick();
-      }
 
-  //BBQ click
-  function bbqClick(){
-    selectedTopping = toppings[2];
-    totalPrice = totalPrice + selectedTopping.Price;
-    pizzaPrice.innerHTML = currency + totalPrice
-  }
-
-      tbbq.onclick = function (){
-        bbqClick();
-      }
-
-  //Olive olive click
-  function oliveClick(){
-    selectedTopping = toppings[3];
-    totalPrice = totalPrice + selectedTopping.Price;
-    pizzaPrice.innerHTML = currency + totalPrice
-  }
-
-      toli.onclick = function (){
-        oliveClick();
-      }
 
 
 //SIZE PIZZA FUNCTIONS //
-//normalsizeClick click
-function normalsizeClick(){
-  selectedSize = size[0];
-  if (toppingIsSelected == false) {
-    totalPrice = selectedPizza.Price * selectedSize.Factor;
-  } else {
-    totalPrice = selectedPizza.Price * selectedSize.Factor + selectedTopping.Price;
-  }  pizzaPrice.innerHTML = currency + totalPrice;
-
-}
-
-    snor.onclick = function (){
-      normalsizeClick();
-    }
-
-
-function mediumsizeClick(){
-  selectedSize = size[1];
-  if (toppingIsSelected == false) {
-    totalPrice = selectedPizza.Price * selectedSize.Factor;
-  } else {
-    totalPrice = selectedPizza.Price * selectedSize.Factor + selectedTopping.Price;
+function selectSize(Selected) {
+  // loop over alles in de size array
+  // kijk of de naam overeenkomst met 'Selected'
+  // zo ja, zet dan daar "Selected" op true in de array
+  var i;
+  console.log("SelectedSize:" + Selected);
+  for (i = 0; i < size.length; i++) {
+    if(size[i].Name == Selected) {
+      size[i].Selected = true;
+    } else {
+      size[i].Selected = false;
+    };
   }
-  pizzaPrice.innerHTML = currency + totalPrice;
+  displayAlert();
+  calculateTotalPrice();
 }
 
-    smed.onclick = function (){
-      mediumsizeClick();
-    }
+        snor.onclick = function () {selectSize('Normal');}
+        smed.onclick = function () {selectSize('Medium');}
+        slar.onclick = function () {selectSize('Large');}
+        skin.onclick = function () {selectSize('King');}
 
 
-function largesizeClick(){
-      selectedSize = size[2];
-      if (toppingIsSelected == false) {
-        totalPrice = selectedPizza.Price * selectedSize.Factor;
-      } else {
-        totalPrice = selectedPizza.Price * selectedSize.Factor + selectedTopping.Price;
-      }      pizzaPrice.innerHTML = currency + totalPrice;
-    }
-
-      slar.onclick = function (){
-          largesizeClick();
-        }
-
-  function kingsizeClick(){
-              selectedSize = size[3];
-              if (toppingIsSelected == false) {
-                totalPrice = selectedPizza.Price * selectedSize.Factor;
-              } else {
-                totalPrice = selectedPizza.Price * selectedSize.Factor + selectedTopping.Price;
-              }      pizzaPrice.innerHTML = currency + totalPrice;
-            }
-
-              skin.onclick = function (){
-                  kingsizeClick();
-                }
-
-//START SLICINGS!!!!!!!!!
-
-function unslicedClick(){
-  selectedSlicing = slicing[0];
-  if (slicingAlreadySelected == false) {
-    totalPriceWithSlicing = 0;
-    totalPriceWithSlicing = totalPrice + selectedSlicing.Price;
-    slicingAlreadySelected = true;
-    pizzaPrice.innerHTML = currency + totalPriceWithSlicing
+function selectSlicing(Selected) {
+// loop over alles in de slicing array
+// kijk of de naam overeenkomst met 'Selected'
+// zo ja, zet dan daar "Selected" op true in de array
+var i;
+for (i = 0; i < slicing.length; i++) {
+  if(slicing[i].Name == Selected) {
+    slicing[i].Selected = true;
   } else {
-    totalPriceWithSlicing = 0;
-    pizzaPrice.innerHTML = currency + totalPrice
-    slicingAlreadySelected = false;
-
-  }
+    slicing[i].Selected = false;
+  };
 }
-    slun.onclick = function (){
-      unslicedClick();
-    }
+displayAlert();
+calculateTotalPrice();
+}
+
+        slun.onclick = function () {selectSlicing('Unsliced');}
+        sltwo.onclick = function () {selectSlicing('Two Slice');}
+        slfou.onclick = function () {selectSlicing('Four Slice');}
+        slsix.onclick = function () {selectSlicing('Six Slice');}
+
+function selectAdditional(Selected) {
+// loop over alles in de additional array
+// kijk of de naam overeenkomst met 'Selected'
+// zo ja, zet dan daar "Selected" op true in de array
+var i;
+for (i = 0; i < additional.length; i++) {
+if(additional[i].Name == Selected) {
+  additional[i].Selected = true;
+} ;
+}
+  displayAlert();
+calculateTotalPrice();
+}
+
+              adel.onclick = function () {selectAdditional('Delivery');}
+              aban.onclick = function () {selectAdditional('Debit card');}
 
 
-    function twoslicedClick(){
-      selectedSlicing = slicing[1];
-      if (slicingAlreadySelected == false) {
-        totalPriceWithSlicing = 0;
-        totalPriceWithSlicing = totalPrice + selectedSlicing.Price;
-        slicingAlreadySelected = true;
-        pizzaPrice.innerHTML = currency + totalPriceWithSlicing
-      } else {
-        totalPriceWithSlicing = 0;
-        pizzaPrice.innerHTML = currency + totalPrice
-        slicingAlreadySelected = false;
+function calculateTotalPrice() {
+  totalPrice = 0;
 
+      for (i = 0; i < pizzas.length; i++) {
+        if(pizzas[i].Selected == true) {
+          totalPrice = totalPrice + pizzas[i].Price;
+          pizzaImage.src = pizzas[i].Image;
+        };
       }
+
+      for (i = 0; i < slicing.length; i++) {
+        if(slicing[i].Selected == true) {
+          totalPrice = totalPrice + slicing[i].Price;
+        };
+      }
+
+      for (i = 0; i < size.length; i++) {
+        if(size[i].Selected == true) {
+          totalPrice = totalPrice * size[i].Factor;
+        };
+      }
+
+      for (i = 0; i < toppings.length; i++) {
+        if(toppings[i].Selected == true) {
+          totalPrice = totalPrice + toppings[i].Price;
+        };
+      }
+
+      for (i = 0; i < additional.length; i++) {
+        if(additional[i].Selected == true) {
+          totalPrice = totalPrice + additional[i].Price;
+        };
+      }
+
+      // repeat this for topping, pizzA, AND SIZE
+      pizzaPrice.innerHTML = currency + totalPrice;
+
     }
-        sltwo.onclick = function (){
-          twoslicedClick();
-        }
-
-    function fourslicedClick(){
-          selectedSlicing = slicing[2];
-          if (slicingAlreadySelected == false) {
-            totalPriceWithSlicing = 0;
-            totalPriceWithSlicing = totalPrice + selectedSlicing.Price;
-            slicingAlreadySelected = true;
-            pizzaPrice.innerHTML = currency + totalPriceWithSlicing
-          } else {
-            totalPriceWithSlicing = 0;
-            pizzaPrice.innerHTML = currency + totalPrice
-            slicingAlreadySelected = false;
-          }
-        }
-            slfou.onclick = function (){
-              fourslicedClick();
-            }
-
-         function sixslicedClick(){
-                  selectedSlicing = slicing[3];
-                  if (slicingAlreadySelected == false) {
-                    totalPriceWithSlicing = 0;
-                    totalPriceWithSlicing = totalPrice + selectedSlicing.Price;
-                    slicingAlreadySelected = true;
-                    pizzaPrice.innerHTML = currency + totalPriceWithSlicing
-                  } else {
-                    totalPriceWithSlicing = 0;
-                    pizzaPrice.innerHTML = currency + totalPrice
-                    slicingAlreadySelected = false;
-                  }
-                }
-                    slsix.onclick = function (){
-                      sixslicedClick();
-                    }

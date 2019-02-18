@@ -1,0 +1,20 @@
+* {
+  margin: 0px;
+}
+
+#additionalList {
+  float: right;
+  margin-top: 40%
+}
+
+li {
+  list-style-type:none;
+}
+
+#alert {
+background-color: green;
+width: 50%;
+margin: auto;
+text-align: center;
+display: none;
+}

@@ -12,7 +12,10 @@ var SelectedSize = null;
 var sizeinUse = false;
 var toppingIsSelected = false;
 var alert = document.getElementById('alert');
-
+var pizzaOrders = document.getElementById('pizzaOrders')
+var toppingOrders = document.getElementById('toppingOrders')
+var sizeOrders = document.getElementById('sizeOrders')
+var slicingOrders = document.getElementById('slicingOrders')
 var currency = "$";
 
 var pizzas = [
@@ -343,7 +346,7 @@ if(additional[i].Name == Selected) {
   additional[i].Selected = true;
 } ;
 }
-  displayAlert();
+displayAlert();
 calculateTotalPrice();
 }
 
@@ -358,30 +361,37 @@ function calculateTotalPrice() {
         if(pizzas[i].Selected == true) {
           totalPrice = totalPrice + pizzas[i].Price;
           pizzaImage.src = pizzas[i].Image;
+          pizzaName.innerHTML = pizzas[i].Name;
+          pizzaOrders.innerHTML = pizzas[i].Name + currency + pizzas[i].Price;
         };
       }
 
       for (i = 0; i < slicing.length; i++) {
         if(slicing[i].Selected == true) {
           totalPrice = totalPrice + slicing[i].Price;
+          slicingOrders.innerHTML = slicing[i].Name + currency + slicing[i].Price;
         };
       }
 
       for (i = 0; i < size.length; i++) {
         if(size[i].Selected == true) {
           totalPrice = totalPrice * size[i].Factor;
+          sizeOrders.innerHTML = size[i].Name + "x" + size[i].Factor;
+
         };
       }
 
       for (i = 0; i < toppings.length; i++) {
         if(toppings[i].Selected == true) {
           totalPrice = totalPrice + toppings[i].Price;
+          toppingOrders.innerHTML = toppings[i].Name + currency + toppings[i].Price;
         };
       }
 
       for (i = 0; i < additional.length; i++) {
         if(additional[i].Selected == true) {
           totalPrice = totalPrice + additional[i].Price;
+          additionalOrders.innerHTML = additional[i].Name + currency + additional[i].Price;
         };
       }
 

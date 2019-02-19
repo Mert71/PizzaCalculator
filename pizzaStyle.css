@@ -9,6 +9,12 @@
 
 li {
   list-style-type:none;
+    cursor: pointer;
+}
+
+li:hover {
+background: tomato;
+transition: 0.5s ease;
 }
 
 #alert {
@@ -17,4 +23,12 @@ width: 50%;
 margin: auto;
 text-align: center;
 display: none;
+}
+
+#pizzaNameList , #sizeNameList {
+  margin-top: 110px;
+}
+
+#additionalList {
+  margin-bottom: 50px;
 }
